@@ -1,7 +1,8 @@
 import React from "react";
 import Navbar from "./components/Navbar";
 import TokenGrid from "./components/TokenGrid";
-import { withStyles, createStyles } from "@material-ui/core/styles";
+import { MuiThemeProvider } from "@material-ui/core";
+import { withStyles, createStyles, createTheme, responsiveFontSizes } from "@material-ui/core/styles";
 
 const styles = createStyles({
   root: {
@@ -9,14 +10,24 @@ const styles = createStyles({
   },
 });
 
+const theme = createTheme({
+  typography: {
+    fontFamily: '"Varela Round", sans-serif',
+  },
+});
+
+const responsiveTheme = responsiveFontSizes(theme);
+
 function App({ classes }: any) {
   return (
-    <div className="App">
-      <Navbar />
-      <div className={classes.root}>
-        <TokenGrid />
+    <MuiThemeProvider theme={responsiveTheme}>
+      <div className="App">
+        <Navbar />
+        <div className={classes.root}>
+          <TokenGrid />
+        </div>
       </div>
-    </div>
+    </MuiThemeProvider>
   );
 }
 
