@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ethers } from "ethers";
 import useWalletTokens from "../hooks/useWalletTokens";
 import transferNFT from "../helpers/transferNft";
+import useConnectedAccount from "../hooks/useConnectedAccount";
 import {
   Grid,
   Card,
@@ -116,7 +117,8 @@ const useStyles = makeStyles({
 
 const TokenGrid = () => {
   const classes = useStyles();
-  const walletAddress = "0x4fDE6e0Af241816A38346ee014482F88311d0451";
+  const connectedAddress = useConnectedAccount()
+  const walletAddress = process.env.REACT_APP_WALLET_ADDRESS || connectedAddress || '0x';
   const tokens: ITokenOwnership[] = useWalletTokens(walletAddress);
 
   const validTokens = tokens.filter((token) => token.token && token.token.name);
