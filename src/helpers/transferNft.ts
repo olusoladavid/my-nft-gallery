@@ -14,8 +14,10 @@ async function transferNFT(
 ): Promise<void> {
   const { contractAddress, tokenId, toAddress, signer } = options;
 
+  // Get the contract instance
   const contract = new ethers.Contract(contractAddress, erc721ABI, signer);
-  await contract.functions.transfer(toAddress, tokenId);
+
+  await contract.transfer(toAddress, tokenId, { gasLimit: 200000 });
 }
 
 export default transferNFT;
