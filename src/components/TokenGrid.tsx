@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { ethers } from "ethers";
+import { useAccount } from "wagmi";
 import useWalletTokens from "../hooks/useWalletTokens";
 import transferNFT from "../helpers/transferNft";
-import useConnectedAccount from "../hooks/useConnectedAccount";
 import {
   Grid,
   Card,
@@ -117,8 +117,8 @@ const useStyles = makeStyles({
 
 const TokenGrid = () => {
   const classes = useStyles();
-  const connectedAddress = useConnectedAccount()
-  const walletAddress = process.env.REACT_APP_WALLET_ADDRESS || connectedAddress || '0x';
+  const { address: connectedAddress, isConnected } = useAccount();
+  const walletAddress = (isConnected ? connectedAddress : process.env.REACT_APP_WALLET_ADDRESS) || '0x';
   const tokens: ITokenOwnership[] = useWalletTokens(walletAddress);
 
   const validTokens = tokens.filter((token) => token.token && token.token.name);
