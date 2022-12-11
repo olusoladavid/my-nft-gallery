@@ -1,46 +1,41 @@
-# Getting Started with Create React App
+# MyNFTGallery
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+MyNFTGallery is a simple React app that allows you to view all of your NFTs in one place. The app is currently deployed at https://my-nft-gallery.netlify.com for you to try out.
 
-## Available Scripts
+## Running the app locally
 
-In the project directory, you can run:
+To run the app locally, you will need to have Node.js installed on your computer. Once you have Node.js installed, follow these steps:
 
-### `yarn start`
+1. Clone the repository:
+    ```
+    git clone https://github.com/<your-github-username>/my-nft-gallery.git
+    ```
+2. Navigate to the cloned repository:
+    ```
+    cd my-nft-gallery
+    ```
+3. Install the dependencies:
+    ```
+    yarn install
+    ```
+4. Start the app:
+    ```
+    yarn start
+    ```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+The app should now be running on http://localhost:3000.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Features
 
-### `yarn test`
+- To view your NFTs, simply navigate to the app and connect your wallet. Your NFTs will then be displayed in gallery style below the navigation bar.
+- You can also send an NFT you own to another address
+- Clicking the card will take you to the Etherscan page of the token for further information about it
+- Simulation Mode: If you don't own any NFTs, you can click the simulation mode (see navigation bar) to view NFTs of a random NFT degen wallet
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Contributing
 
-### `yarn build`
+We welcome contributions to MyNFTGallery. If you have an idea for a new feature or have found a bug, please open an issue on the repository.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+If you would like to contribute code to the project, please fork the repository and create a new branch for your changes. Once you have made your changes, open a pull request against the `main` branch and we will review your code.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Thank you for considering contributing to MyNFTGallery!
