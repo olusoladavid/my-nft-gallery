@@ -1,7 +1,8 @@
 import * as React from "react";
-import { SvgIcon } from "@material-ui/core";
-import { CollectionsOutlined } from "@material-ui/icons";
-import { AppBar, Toolbar, Typography, makeStyles } from "@material-ui/core";
+import { SvgIcon } from "@mui/material";
+import { CollectionsOutlined } from "@mui/icons-material";
+import { AppBar, Toolbar, Typography } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import "@rainbow-me/rainbowkit/styles.css";
 

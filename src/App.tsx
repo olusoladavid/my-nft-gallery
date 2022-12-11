@@ -1,13 +1,10 @@
 import React from "react";
 import Navbar from "./components/Navbar";
 import TokenGrid from "./components/TokenGrid";
-import { MuiThemeProvider } from "@material-ui/core";
-import {
-  withStyles,
-  createStyles,
-  createTheme,
-  responsiveFontSizes,
-} from "@material-ui/core/styles";
+import { ThemeProvider, StyledEngineProvider, adaptV4Theme } from "@mui/material";
+import { createTheme, responsiveFontSizes } from "@mui/material/styles";
+import withStyles from '@mui/styles/withStyles';
+import createStyles from '@mui/styles/createStyles';
 import "@rainbow-me/rainbowkit/styles.css";
 import "react-toastify/dist/ReactToastify.css";
 import {
@@ -49,11 +46,11 @@ const styles = createStyles({
   },
 });
 
-const theme = createTheme({
+const theme = createTheme(adaptV4Theme({
   typography: {
     fontFamily: '"Varela Round", sans-serif',
   },
-});
+}));
 
 const responsiveTheme = responsiveFontSizes(theme);
 
@@ -61,15 +58,17 @@ function App({ classes }: any) {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider theme={customTheme} chains={chains}>
-        <MuiThemeProvider theme={responsiveTheme}>
-          <div className="App">
-            <ToastContainer />
-            <Navbar />
-            <div className={classes.root}>
-              <TokenGrid />
+        <StyledEngineProvider injectFirst>
+          <ThemeProvider theme={responsiveTheme}>
+            <div className="App">
+              <ToastContainer />
+              <Navbar />
+              <div className={classes.root}>
+                <TokenGrid />
+              </div>
             </div>
-          </div>
-        </MuiThemeProvider>
+          </ThemeProvider>
+        </StyledEngineProvider>
       </RainbowKitProvider>
     </WagmiConfig>
   );

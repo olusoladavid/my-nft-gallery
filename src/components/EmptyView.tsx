@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, Typography } from "@mui/material";
 
 const EmptyView = ({ walletIsConnected }: { walletIsConnected: boolean }) => {
   const imgSrc = walletIsConnected ? "./images/emptybox.gif" : "./images/wallet.png";

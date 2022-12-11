@@ -9,16 +9,16 @@ import {
   CardMedia,
   CardContent,
   Typography,
-  makeStyles,
   Button,
   Modal,
   TextField,
   Paper,
   lighten,
   CircularProgress,
-} from "@material-ui/core";
+} from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
 import { toast } from "react-toastify";
-import SendIcon from "@material-ui/icons/Send";
+import SendIcon from "@mui/icons-material/Send";
 import EmptyView from "./EmptyView";
 import type { IToken } from "../interfaces";
 
