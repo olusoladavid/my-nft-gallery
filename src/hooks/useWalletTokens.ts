@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { ethers } from 'ethers';
 
-const useWalletTokens = (walletAddress: string) => {
+const useWalletTokens = (walletAddress?: string) => {
   const [tokens, setTokens] = useState([]);
 
   useEffect(() => {
@@ -22,6 +22,10 @@ const useWalletTokens = (walletAddress: string) => {
         console.error(error);
       }
     };
+
+    if (!walletAddress) {
+      return;
+    }
 
     if (ethers.utils.isAddress(walletAddress)) {
       fetchData();

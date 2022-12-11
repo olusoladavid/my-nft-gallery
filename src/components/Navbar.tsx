@@ -2,7 +2,8 @@ import * as React from "react";
 import { SvgIcon } from "@material-ui/core";
 import { CollectionsOutlined } from "@material-ui/icons";
 import { AppBar, Toolbar, Typography, makeStyles } from "@material-ui/core";
-import ConnectToMetaMaskButton from "./ConnectWallet";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import "@rainbow-me/rainbowkit/styles.css";
 
 const useStyles = makeStyles({
   navbar: {
@@ -30,7 +31,7 @@ const Navbar: React.FC = () => {
         <Typography variant="h6" className={classes.logo}>
           MyNFTGallery
         </Typography>
-        <ConnectToMetaMaskButton />
+        <ConnectButton />
       </Toolbar>
     </AppBar>
   );

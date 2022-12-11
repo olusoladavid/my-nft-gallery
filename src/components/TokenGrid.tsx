@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { ethers } from "ethers";
-import { useAccount } from "wagmi";
+import { BigNumber, ethers } from "ethers";
+import { Address, useAccount } from "wagmi";
 import useWalletTokens from "../hooks/useWalletTokens";
-import transferNFT from "../helpers/transferNft";
+import useTransferNft from "../hooks/useTransferNft";
 import {
   Grid,
   Card,
@@ -14,9 +14,11 @@ import {
   Modal,
   TextField,
   Paper,
-  lighten
+  lighten,
+  CircularProgress
 } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
+import EmptyView from "./EmptyView";
 
 export interface IToken {
   contract: string;
@@ -115,10 +117,11 @@ const useStyles = makeStyles({
   },
 });
 
+
 const TokenGrid = () => {
   const classes = useStyles();
   const { address: connectedAddress, isConnected } = useAccount();
-  const walletAddress = (isConnected ? connectedAddress : process.env.REACT_APP_WALLET_ADDRESS) || '0x';
+  const walletAddress = isConnected ? connectedAddress : process.env.REACT_APP_WALLET_ADDRESS;
   const tokens: ITokenOwnership[] = useWalletTokens(walletAddress);
 
   const validTokens = tokens.filter((token) => token.token && token.token.name);
@@ -129,6 +132,13 @@ const TokenGrid = () => {
   const [inputValue, setInputValue] = useState("");
   // State to track the selected token
   const [selectedToken, setSelectedToken] = useState<IToken | null>(null);
+
+  const { transferNFT, isLoading, isSuccess } = useTransferNft({
+    contractAddress: (selectedToken?.contract) as unknown as Address,
+    tokenId: BigNumber.from(selectedToken?.tokenId ?? 0),
+    toAddress: inputValue as Address,
+    fromAddress: walletAddress as Address,
+  });
 
   const handleCardClick = (token: IToken) => {
     // Redirect the user to the Etherscan page for the NFT token
@@ -153,32 +163,25 @@ const TokenGrid = () => {
     if (!selectedToken) {
       return;
     }
-    // Get the provider and wallet instance from the injected web3 object
-    const provider = new ethers.providers.Web3Provider(
-      (window as any).ethereum
-    );
-    const signer = provider.getSigner();
 
     try {
-      await transferNFT({
-        provider,
-        contractAddress: selectedToken.contract,
-        tokenId: selectedToken.tokenId,
-        toAddress: inputValue,
-        signer,
-      });
+      if (typeof transferNFT === "function") {
+      await transferNFT();
+      }
     } catch (error) {
       console.error(error);
     }
 
-    // Close the modal after the transaction has been sent
-    setModalOpen(false);
-    // Reset the input value
-    setInputValue("");
-    setSelectedToken(null);
+    // setModalOpen(false);
+    // setInputValue("");
+    // setSelectedToken(null);
   };
 
   const isValidAddress = inputValue ? ethers.utils.isAddress(inputValue) : true;
+
+  if (tokens.length === 0) {
+    return <EmptyView walletIsConnected={isConnected} />;
+  }
 
   return (
     <>
@@ -281,6 +284,7 @@ const TokenGrid = () => {
               variant="contained"
               color="primary"
               disabled={!inputValue}
+              startIcon={!isLoading ? <CircularProgress size={24} /> : null}
             >
               Send
             </Button>
