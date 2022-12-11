@@ -15,40 +15,11 @@ import {
   TextField,
   Paper,
   lighten,
-  CircularProgress
+  CircularProgress,
 } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import EmptyView from "./EmptyView";
-
-export interface IToken {
-  contract: string;
-  tokenId: string;
-  name: string;
-  image: string;
-  collection: {
-    id: string;
-    name: string;
-    imageUrl: string;
-    floorAskPrice: number;
-  };
-}
-
-interface ITokenOwnership {
-  token: IToken;
-  ownership: {
-    tokenCount: string;
-    onSaleCount: string;
-    floorAsk: {
-      id: string | null;
-      price: string | null;
-      maker: string | null;
-      validFrom: string | null;
-      validUntil: string | null;
-      source: {};
-    };
-    acquiredAt: string;
-  };
-}
+import type { IToken } from "../interfaces";
 
 const useStyles = makeStyles({
   card: {
@@ -122,7 +93,7 @@ const TokenGrid = () => {
   const classes = useStyles();
   const { address: connectedAddress, isConnected } = useAccount();
   const walletAddress = isConnected ? connectedAddress : process.env.REACT_APP_WALLET_ADDRESS;
-  const tokens: ITokenOwnership[] = useWalletTokens(walletAddress);
+  const { tokens, loading: fetchingTokens } = useWalletTokens(walletAddress);
 
   const validTokens = tokens.filter((token) => token.token && token.token.name);
 
@@ -179,6 +150,23 @@ const TokenGrid = () => {
 
   const isValidAddress = inputValue ? ethers.utils.isAddress(inputValue) : true;
 
+  if (fetchingTokens) {
+    return (
+      <CircularProgress
+        size={90}
+        thickness={2}
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          marginTop: "-20px",
+          marginLeft: "-20px",
+          color: "#3f51b5",
+        }}
+      />
+    );
+  }
+
   if (tokens.length === 0) {
     return <EmptyView walletIsConnected={isConnected} />;
   }
@@ -187,7 +175,7 @@ const TokenGrid = () => {
     <>
       <Grid container spacing={3}>
         {validTokens.map((token, index) => (
-          <Grid item xs={3} key={index}>
+          <Grid item xs={6} sm={3} lg={2} key={index}>
             <Card
               className={classes.card}
               onClick={() => handleCardClick(token.token)}

@@ -13,11 +13,11 @@ const useStyles = makeStyles({
     flexGrow: 1,
     textAlign: "left",
     marginLeft: "8px",
-    fontWeight: 700
+    fontWeight: 700,
   },
   logoIcon: {
     height: "24px",
-    color: "#fff"
+    color: "#fff",
   },
 });
 

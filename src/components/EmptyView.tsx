@@ -7,13 +7,13 @@ const EmptyView = ({ walletIsConnected }: { walletIsConnected: boolean }) => {
     ? "There are no tokens to display"
     : "No wallet connected";
   const subtitle = walletIsConnected
-    ? "Please switch to another wallet or use the search bar"
+    ? "Please switch to another wallet or mint some NFTs."
     : "Please connect your wallet to view your NFTs";
 
   return (
     <Grid
       container
-      justify="center"
+      justifyContent="center"
       alignItems="center"
       direction="column"
       style={{ height: "50vh", width: "50vw", margin: "auto" }}
