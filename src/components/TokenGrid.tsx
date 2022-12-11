@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BigNumber, ethers } from "ethers";
 import { Address, useAccount } from "wagmi";
 import useWalletTokens from "../hooks/useWalletTokens";
@@ -17,6 +17,7 @@ import {
   lighten,
   CircularProgress,
 } from "@material-ui/core";
+import { toast } from "react-toastify";
 import SendIcon from "@material-ui/icons/Send";
 import EmptyView from "./EmptyView";
 import type { IToken } from "../interfaces";
@@ -104,12 +105,43 @@ const TokenGrid = () => {
   // State to track the selected token
   const [selectedToken, setSelectedToken] = useState<IToken | null>(null);
 
-  const { transferNFT, isLoading, isSuccess } = useTransferNft({
+  const { transferNFT, isLoading, isSuccess, isError } = useTransferNft({
     contractAddress: (selectedToken?.contract) as unknown as Address,
     tokenId: BigNumber.from(selectedToken?.tokenId ?? 0),
     toAddress: inputValue as Address,
     fromAddress: walletAddress as Address,
   });
+
+  // effect not fully tested yet
+  useEffect(() => {
+    let poll: NodeJS.Timer;
+    const promise = new Promise((resolve, reject) => {
+      poll = setInterval(() => {
+        if (isLoading) {
+          return;
+        }
+        if (isSuccess) {
+          resolve("success");
+          clearInterval(poll);
+        }
+        if (isError) {
+          reject("error");
+          clearInterval(poll);
+        }
+      }, 1000);
+    });
+    if (isLoading) {
+      toast.promise(promise, {
+        pending: "Sending NFT...",
+        success: "NFT sent successfully!",
+        error: "Error sending NFT",
+      });
+    }
+
+    return () => {
+      clearInterval(poll);
+    }
+  }, [isLoading, isSuccess, isError]);
 
   const handleCardClick = (token: IToken) => {
     // Redirect the user to the Etherscan page for the NFT token
@@ -143,9 +175,9 @@ const TokenGrid = () => {
       console.error(error);
     }
 
-    // setModalOpen(false);
-    // setInputValue("");
-    // setSelectedToken(null);
+    setModalOpen(false);
+    setInputValue("");
+    setSelectedToken(null);
   };
 
   const isValidAddress = inputValue ? ethers.utils.isAddress(inputValue) : true;
@@ -272,7 +304,6 @@ const TokenGrid = () => {
               variant="contained"
               color="primary"
               disabled={!inputValue}
-              startIcon={!isLoading ? <CircularProgress size={24} /> : null}
             >
               Send
             </Button>

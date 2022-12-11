@@ -9,6 +9,7 @@ import {
   responsiveFontSizes,
 } from "@material-ui/core/styles";
 import "@rainbow-me/rainbowkit/styles.css";
+import "react-toastify/dist/ReactToastify.css";
 import {
   getDefaultWallets,
   RainbowKitProvider,
@@ -17,6 +18,7 @@ import {
 } from "@rainbow-me/rainbowkit";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
+import { ToastContainer } from "react-toastify";
 
 const { chains, provider } = configureChains(
   [chain.mainnet],
@@ -61,6 +63,7 @@ function App({ classes }: any) {
       <RainbowKitProvider theme={customTheme} chains={chains}>
         <MuiThemeProvider theme={responsiveTheme}>
           <div className="App">
+            <ToastContainer />
             <Navbar />
             <div className={classes.root}>
               <TokenGrid />

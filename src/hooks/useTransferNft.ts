@@ -21,7 +21,7 @@ const useTransferNFT = ({ contractAddress, tokenId, toAddress, fromAddress }: Tr
   // execute the contract write
   const { write: transferNFT, data } = useContractWrite(config);
 
-  const { isLoading, isSuccess } = useWaitForTransaction({
+  const { isLoading, isSuccess, isError } = useWaitForTransaction({
     hash: data?.hash,
   });
 
@@ -29,7 +29,7 @@ const useTransferNFT = ({ contractAddress, tokenId, toAddress, fromAddress }: Tr
     return {};
   }
 
-  return { transferNFT, isLoading, isSuccess };
+  return { transferNFT, isLoading, isSuccess, isError };
 };
 
 export default useTransferNFT;
