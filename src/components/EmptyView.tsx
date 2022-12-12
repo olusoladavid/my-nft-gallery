@@ -7,8 +7,8 @@ const EmptyView = ({ walletIsConnected }: { walletIsConnected: boolean }) => {
     ? "There are no tokens to display"
     : "No wallet connected";
   const subtitle = walletIsConnected
-    ? "Please switch to another wallet or mint some NFTs."
-    : "Please connect your wallet to view your NFTs";
+    ? "Please switch to another wallet or try the simulation mode ⚡️."
+    : "Please connect a wallet to view your NFTs. You can also try the simulation mode ⚡️.";
 
   return (
     <Grid

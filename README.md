@@ -1,6 +1,6 @@
 # MyNFTGallery
 
-MyNFTGallery is a simple React app that allows you to view all of your NFTs in one place. The app is currently deployed at https://my-nft-gallery.netlify.com for you to try out.
+MyNFTGallery is a simple React app that allows you to view all of your NFTs in one place. The app is currently deployed at [https://my-nft-gallery.netlify.app](https://my-nft-gallery.netlify.app) for you to try out.
 
 ## Running the app locally
 
@@ -31,6 +31,7 @@ The app should now be running on http://localhost:3000.
 - You can also send an NFT you own to another address
 - Clicking the card will take you to the Etherscan page of the token for further information about it
 - Simulation Mode: If you don't own any NFTs, you can click the simulation mode (see navigation bar) to view NFTs of a random NFT degen wallet
+- In simulation mode, hovering the card will show a "Buy" button that allows you to make a bid on OpenSea
 
 ## Contributing
 
