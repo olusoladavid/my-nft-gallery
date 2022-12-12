@@ -16,7 +16,7 @@ import {
   lighten,
   CircularProgress,
 } from "@mui/material";
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 import { toast } from "react-toastify";
 import { Send, LocalMall } from "@mui/icons-material";
 import EmptyView from "./EmptyView";
@@ -90,15 +90,14 @@ const useStyles = makeStyles({
   },
 });
 
-
 const TokenGrid = () => {
   const classes = useStyles();
   const { address: connectedAddress, isConnected } = useAccount();
-  const { isSimulationMode } = useContext(
-    SimulationModeContext
-  );
-  const simulationAddresses = process.env.REACT_APP_SIMULATION_ADDRESSES?.split(",") || [];
-  const randomAddress = simulationAddresses[Math.floor(Math.random() * simulationAddresses.length)];
+  const { isSimulationMode } = useContext(SimulationModeContext);
+  const simulationAddresses =
+    process.env.REACT_APP_SIMULATION_ADDRESSES?.split(",") || [];
+  const randomAddress =
+    simulationAddresses[Math.floor(Math.random() * simulationAddresses.length)];
   const walletAddress = isSimulationMode ? randomAddress : connectedAddress;
   const { tokens, loading: fetchingTokens } = useWalletTokens(walletAddress);
 
@@ -112,7 +111,7 @@ const TokenGrid = () => {
   const [selectedToken, setSelectedToken] = useState<IToken | null>(null);
 
   const { transferNFT, isLoading, isSuccess, isError } = useTransferNft({
-    contractAddress: (selectedToken?.contract) as unknown as Address,
+    contractAddress: selectedToken?.contract as unknown as Address,
     tokenId: BigNumber.from(selectedToken?.tokenId ?? 0),
     toAddress: inputValue as Address,
     fromAddress: walletAddress as Address,
@@ -146,7 +145,7 @@ const TokenGrid = () => {
 
     return () => {
       clearInterval(poll);
-    }
+    };
   }, [isLoading, isSuccess, isError]);
 
   const handleCardClick = (token: IToken) => {
@@ -185,7 +184,7 @@ const TokenGrid = () => {
 
     try {
       if (typeof transferNFT === "function") {
-      await transferNFT();
+        await transferNFT();
       }
     } catch (error) {
       console.error(error);
@@ -197,6 +196,7 @@ const TokenGrid = () => {
   };
 
   const isValidAddress = inputValue ? ethers.utils.isAddress(inputValue) : true;
+  const shouldShowSendAction = isConnected && !isSimulationMode;
 
   if (fetchingTokens) {
     return (
@@ -262,14 +262,18 @@ const TokenGrid = () => {
               <Button
                 variant="contained"
                 color="primary"
-                endIcon={isSimulationMode ? <LocalMall />: <Send />}
+                endIcon={shouldShowSendAction ? <Send /> : <LocalMall />}
                 disableElevation
                 classes={{
                   root: classes.sendButton,
                 }}
-                onClick={isSimulationMode ? handleBuyButtonClick(token.token) : handleSendButtonClick(token.token)}
+                onClick={
+                  shouldShowSendAction
+                    ? handleSendButtonClick(token.token)
+                    : handleBuyButtonClick(token.token)
+                }
               >
-                {isSimulationMode ? "Buy" : "Send"}
+                {shouldShowSendAction ? "Send" : "Buy"}
               </Button>
             </Card>
           </Grid>
