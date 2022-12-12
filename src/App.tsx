@@ -1,10 +1,14 @@
 import React from "react";
 import Navbar from "./components/Navbar";
 import TokenGrid from "./components/TokenGrid";
-import { ThemeProvider, StyledEngineProvider, adaptV4Theme } from "@mui/material";
+import {
+  ThemeProvider,
+  StyledEngineProvider,
+  adaptV4Theme,
+} from "@mui/material";
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
-import withStyles from '@mui/styles/withStyles';
-import createStyles from '@mui/styles/createStyles';
+import withStyles from "@mui/styles/withStyles";
+import createStyles from "@mui/styles/createStyles";
 import "@rainbow-me/rainbowkit/styles.css";
 import "react-toastify/dist/ReactToastify.css";
 import {
@@ -16,6 +20,7 @@ import {
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
 import { ToastContainer } from "react-toastify";
+import { SimulationModeProvider } from "./contexts/SimulationMode";
 
 const { chains, provider } = configureChains(
   [chain.mainnet],
@@ -46,11 +51,13 @@ const styles = createStyles({
   },
 });
 
-const theme = createTheme(adaptV4Theme({
-  typography: {
-    fontFamily: '"Varela Round", sans-serif',
-  },
-}));
+const theme = createTheme(
+  adaptV4Theme({
+    typography: {
+      fontFamily: '"Varela Round", sans-serif',
+    },
+  })
+);
 
 const responsiveTheme = responsiveFontSizes(theme);
 
@@ -60,13 +67,15 @@ function App({ classes }: any) {
       <RainbowKitProvider theme={customTheme} chains={chains}>
         <StyledEngineProvider injectFirst>
           <ThemeProvider theme={responsiveTheme}>
-            <div className="App">
-              <ToastContainer />
-              <Navbar />
-              <div className={classes.root}>
-                <TokenGrid />
+            <SimulationModeProvider>
+              <div className="App">
+                <ToastContainer />
+                <Navbar />
+                <div className={classes.root}>
+                  <TokenGrid />
+                </div>
               </div>
-            </div>
+            </SimulationModeProvider>
           </ThemeProvider>
         </StyledEngineProvider>
       </RainbowKitProvider>

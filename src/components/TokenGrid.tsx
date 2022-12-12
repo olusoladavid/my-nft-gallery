@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { BigNumber, ethers } from "ethers";
 import { Address, useAccount } from "wagmi";
 import useWalletTokens from "../hooks/useWalletTokens";
@@ -18,8 +18,9 @@ import {
 } from "@mui/material";
 import makeStyles from '@mui/styles/makeStyles';
 import { toast } from "react-toastify";
-import SendIcon from "@mui/icons-material/Send";
+import { Send, LocalMall } from "@mui/icons-material";
 import EmptyView from "./EmptyView";
+import { SimulationModeContext } from "../contexts/SimulationMode";
 import type { IToken } from "../interfaces";
 
 const useStyles = makeStyles({
@@ -93,7 +94,12 @@ const useStyles = makeStyles({
 const TokenGrid = () => {
   const classes = useStyles();
   const { address: connectedAddress, isConnected } = useAccount();
-  const walletAddress = isConnected ? connectedAddress : process.env.REACT_APP_WALLET_ADDRESS;
+  const { isSimulationMode } = useContext(
+    SimulationModeContext
+  );
+  const simulationAddresses = process.env.REACT_APP_SIMULATION_ADDRESSES?.split(",") || [];
+  const randomAddress = simulationAddresses[Math.floor(Math.random() * simulationAddresses.length)];
+  const walletAddress = isSimulationMode ? randomAddress : connectedAddress;
   const { tokens, loading: fetchingTokens } = useWalletTokens(walletAddress);
 
   const validTokens = tokens.filter((token) => token.token && token.token.name);
@@ -151,10 +157,18 @@ const TokenGrid = () => {
     );
   };
 
-  const handleSendButtonClick = (event: React.MouseEvent, token: IToken) => {
-    event.stopPropagation();
-    setModalOpen(true);
-    setSelectedToken(token);
+  const handleSendButtonClick =
+    (token: IToken) => (event: React.MouseEvent) => {
+      event.stopPropagation();
+      setModalOpen(true);
+      setSelectedToken(token);
+    };
+
+  const handleBuyButtonClick = (token: IToken) => (event: React.MouseEvent) => {
+    window.open(
+      `https://opensea.io/assets/${token.contract}/${token.tokenId}`,
+      "_blank"
+    );
   };
 
   const handleModalCancel = () => {
@@ -246,14 +260,14 @@ const TokenGrid = () => {
               <Button
                 variant="contained"
                 color="primary"
-                endIcon={<SendIcon />}
+                endIcon={isSimulationMode ? <LocalMall />: <Send />}
                 disableElevation
                 classes={{
                   root: classes.sendButton,
                 }}
-                onClick={(event) => handleSendButtonClick(event, token.token)}
+                onClick={isSimulationMode ? handleBuyButtonClick(token.token) : handleSendButtonClick(token.token)}
               >
-                Send
+                {isSimulationMode ? "Buy" : "Send"}
               </Button>
             </Card>
           </Grid>

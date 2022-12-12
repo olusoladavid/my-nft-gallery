@@ -1,9 +1,10 @@
-import * as React from "react";
+import React, { useContext } from "react";
 import { SvgIcon } from "@mui/material";
-import { CollectionsOutlined } from "@mui/icons-material";
-import { AppBar, Toolbar, Typography } from "@mui/material";
-import makeStyles from '@mui/styles/makeStyles';
+import { CollectionsOutlined, Bolt } from "@mui/icons-material";
+import { AppBar, Toolbar, Typography, Tooltip } from "@mui/material";
+import makeStyles from "@mui/styles/makeStyles";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { SimulationModeContext } from "../contexts/SimulationMode";
 import "@rainbow-me/rainbowkit/styles.css";
 
 const useStyles = makeStyles({
@@ -20,10 +21,24 @@ const useStyles = makeStyles({
     height: "24px",
     color: "#fff",
   },
+  simulationIcon: {
+    fontSize: "32px",
+    color: "#fff",
+    marginRight: "20px",
+    cursor: "pointer",
+  },
 });
 
 const Navbar: React.FC = () => {
   const classes = useStyles();
+
+  const { isSimulationMode, toggleSimulationMode } = useContext(
+    SimulationModeContext
+  );
+
+  const handleSimulationIconClick = () => {
+    toggleSimulationMode();
+  };
 
   return (
     <AppBar position="sticky" className={classes.navbar}>
@@ -32,6 +47,20 @@ const Navbar: React.FC = () => {
         <Typography variant="h6" className={classes.logo}>
           MyNFTGallery
         </Typography>
+        <Tooltip
+          title={
+            isSimulationMode
+              ? "Turn off Simulation Mode"
+              : "Turn on Simulation Mode"
+          }
+        >
+          <SvgIcon
+            component={Bolt}
+            className={classes.simulationIcon}
+            onClick={handleSimulationIconClick}
+            style={{ color: isSimulationMode ? "#b9f516" : "#aaa" }}
+          />
+        </Tooltip>
         <ConnectButton />
       </Toolbar>
     </AppBar>
