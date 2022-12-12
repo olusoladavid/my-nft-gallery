@@ -153,7 +153,8 @@ const TokenGrid = () => {
     // Redirect the user to the Etherscan page for the NFT token
     window.open(
       `https://etherscan.io/token/${token.contract}?a=${token.tokenId}`,
-      "_blank"
+      "_blank",
+      "noopener"
     );
   };
 
@@ -167,7 +168,8 @@ const TokenGrid = () => {
   const handleBuyButtonClick = (token: IToken) => (event: React.MouseEvent) => {
     window.open(
       `https://opensea.io/assets/${token.contract}/${token.tokenId}`,
-      "_blank"
+      "_blank",
+      "noopener"
     );
   };
 
